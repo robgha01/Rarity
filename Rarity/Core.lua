@@ -33,8 +33,8 @@ local bagitems = {}
 local tempbagitems = {}
 local used = {}
 local fishzones = {}
-local archfragments = {}
-local architems = {}
+--local archfragments = {}
+--local architems = {}
 
 local bankOpen = false
 local guildBankOpen = false
@@ -50,7 +50,7 @@ local gasSpell = (GetSpellInfo(30427))
 local openSpell = (GetSpellInfo(3365))
 local openNoTextSpell = (GetSpellInfo(22810))
 local pickSpell = (GetSpellInfo(1804))
-local archSpell = (GetSpellInfo(73979))
+--local archSpell = (GetSpellInfo(73979))
 local skinSpell = (GetSpellInfo(8613))
 local spells = {
 	[miningSpell] = "Mining",
@@ -60,7 +60,7 @@ local spells = {
 	[openSpell] = "Treasure",
 	[openNoTextSpell] = "Treasure",
 	[pickSpell] = "Treasure",
-	[archSpell] = "Archaeology",
+	--[archSpell] = "Archaeology",
  [skinSpell] = "Skinning",
 }
 local tooltipLeftText1 = _G["GameTooltipTextLeft1"]
@@ -205,7 +205,7 @@ local BOSS = "BOSS"
 local ZONE = "ZONE"
 local USE = "USE"
 local FISHING = "FISHING"
-local ARCH = "ARCH"
+--local ARCH = "ARCH"
 local SPECIAL = "SPECIAL"
 local MINING = "MINING"
 
@@ -253,8 +253,8 @@ local GetRealZoneText = _G.GetRealZoneText
 local GetContainerNumSlots = _G.GetContainerNumSlots
 local GetContainerItemID = _G.GetContainerItemID
 local GetContainerItemInfo = _G.GetContainerItemInfo
-local GetNumArchaeologyRaces = _G.GetNumArchaeologyRaces
-local GetArchaeologyRaceInfo = _G.GetArchaeologyRaceInfo
+--local GetNumArchaeologyRaces = _G.GetNumArchaeologyRaces
+--local GetArchaeologyRaceInfo = _G.GetArchaeologyRaceInfo
 local SetSelectedArtifact = _G.SetSelectedArtifact
 local GetSelectedArtifactInfo = _G.GetSelectedArtifactInfo
 local GetStatistic = _G.GetStatistic
@@ -308,8 +308,8 @@ do
    R.tempbagitems = tempbagitems
    R.bagitems = bagitems
    R.fishzones = fishzones
-   R.archfragments = archfragments
-   R.architems = architems
+   --R.archfragments = archfragments
+   --R.architems = architems
 		end
 
   -- LibSink still tries to call a non-existent Blizzard function sometimes
@@ -346,7 +346,7 @@ do
 		self:UnregisterAllEvents()
   self:RegisterBucketEvent("BAG_UPDATE", 0.5, "OnBagUpdate")
   self:RegisterEvent("LOOT_OPENED", "OnEvent")
-  self:RegisterEvent("CURRENCY_DISPLAY_UPDATE", "ScanArchFragments") -- The high tech method by which we detect archaeology solves
+  --self:RegisterEvent("CURRENCY_DISPLAY_UPDATE", "ScanArchFragments") -- The high tech method by which we detect archaeology solves
   self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "OnCombat") -- Used to detect boss kills that we didn't solo
   self:RegisterEvent("BANKFRAME_OPENED", "OnEvent")
   self:RegisterEvent("BANKFRAME_CLOSED", "OnEvent")
@@ -358,7 +358,7 @@ do
 	 self:RegisterEvent("UNIT_SPELLCAST_FAILED", "SpellFailed") -- Fishing detection
 	 self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", "SpellFailed") -- Fishing detection
   self:RegisterEvent("LOOT_CLOSED", "GatherCompleted") -- Fishing detection
-  self:RegisterEvent("ARTIFACT_HISTORY_READY", "ScanAllArch")
+  --self:RegisterEvent("ARTIFACT_HISTORY_READY", "ScanAllArch")
   self:RegisterEvent("PLAYER_LOGOUT", "OnEvent")
   self:RegisterEvent("AUCTION_HOUSE_CLOSED", "OnEvent")
   self:RegisterEvent("AUCTION_HOUSE_SHOW", "OnEvent")
@@ -377,7 +377,7 @@ do
 		self.db.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
 		self.db.RegisterCallback(self, "OnProfileDeleted", "OnProfileChanged")
 
-  RequestArtifactCompletionHistory() -- Request archaeology info from the server
+  --RequestArtifactCompletionHistory() -- Request archaeology info from the server
   self:ScheduleTimer(function() R:ScanBags() end, 10) -- Also scan bags 10 seconds after init
 
   -- Clean up session info
@@ -465,7 +465,7 @@ function R:OnProfileChanged(event, database, newProfileKey)
  sessionTimer = nil
 	self.db:RegisterDefaults(self.defaults)
  self:UpdateInterestingThings()
- self:ScanAllArch(event)
+ --self:ScanAllArch(event)
 	self:ScanExistingItems(event)
  self:ScanBags()
  self:FindTrackedItem()
@@ -676,7 +676,7 @@ function R:UpdateInterestingThings()
  table.wipe(npcs_to_items)
  table.wipe(used)
  table.wipe(fishzones)
- table.wipe(architems)
+ --table.wipe(architems)
 
  for k, v in pairs(self.db.profile.groups) do
   if type(v) == "table" then
@@ -711,9 +711,9 @@ function R:UpdateInterestingThings()
         if lbsz[vvv] then fishzones[lbsz[vvv]] = vv end
         fishzones[vvv] = vv
        end
-      elseif vv.method == ARCH and vv.itemId ~= nil then
-       local itemName = GetItemInfo(vv.itemId)
-       if itemName then architems[itemName] = vv end
+      --elseif vv.method == ARCH and vv.itemId ~= nil then
+      -- local itemName = GetItemInfo(vv.itemId)
+      -- if itemName then architems[itemName] = vv end
       end
       if vv.itemId ~= nil then items[vv.itemId] = vv end
       if vv.itemId2 ~= nil then items[vv.itemId2] = vv end
@@ -1170,72 +1170,72 @@ end
 -- Archaeology detection. Basically we look to see if you spent any fragments, and rescan your projects if so.
 -------------------------------------------------------------------------------------
 
-function R:ScanAllArch(event)
- self:UnregisterEvent("ARTIFACT_HISTORY_READY")
- self:ScanArchFragments(event)
- self:ScanArchProjects(event)
-end
+--function R:ScanAllArch(event)
+-- self:UnregisterEvent("ARTIFACT_HISTORY_READY")
+-- self:ScanArchFragments(event)
+-- self:ScanArchProjects(event)
+--end
 
-function R:ScanArchFragments(event)
- local scan = false
- if GetNumArchaeologyRaces() == 0 then return end
-	for race_id = 1, GetNumArchaeologyRaces() do
-		local _, _, _, currencyAmount = GetArchaeologyRaceInfo(race_id)
-		local diff = currencyAmount - (archfragments[race_id] or 0)
-		archfragments[race_id] = currencyAmount
-  if diff < 0 then
-   -- We solved an artifact. If any of our items depend on this race ID, increment their attempt count.
-   for k, v in pairs(self.db.profile.groups) do
-    if type(v) == "table" then
-     for kk, vv in pairs(v) do
-      if type(vv) == "table" then
-       if vv.enabled ~= false then
-        local found = false
-        if vv.method == ARCH and vv.raceId ~= nil then
-         if vv.raceId == race_id then found = true end
-        end
-        if found then
-         if vv.attempts == nil then vv.attempts = 1 else vv.attempts = vv.attempts + 1 end
-         self:OutputAttempts(vv)
-        end
-       end
-      end
-     end
-    end
-   end
-   scan = true
-  end
- end
+--function R:ScanArchFragments(event)
+-- local scan = false
+-- if GetNumArchaeologyRaces() == 0 then return end
+--	for race_id = 1, GetNumArchaeologyRaces() do
+--		local _, _, _, currencyAmount = GetArchaeologyRaceInfo(race_id)
+--		local diff = currencyAmount - (archfragments[race_id] or 0)
+--		archfragments[race_id] = currencyAmount
+--  if diff < 0 then
+--   -- We solved an artifact. If any of our items depend on this race ID, increment their attempt count.
+--   for k, v in pairs(self.db.profile.groups) do
+--    if type(v) == "table" then
+--     for kk, vv in pairs(v) do
+--      if type(vv) == "table" then
+--       if vv.enabled ~= false then
+--        local found = false
+--        if vv.method == ARCH and vv.raceId ~= nil then
+--         if vv.raceId == race_id then found = true end
+--        end
+--        if found then
+--         if vv.attempts == nil then vv.attempts = 1 else vv.attempts = vv.attempts + 1 end
+--         self:OutputAttempts(vv)
+--        end
+--       end
+--      end
+--     end
+--    end
+--   end
+--   scan = true
+--  end
+-- end
 
- -- We solved an artifact; scan projects
- if scan then
-  -- Scan now, and later. The server takes a second to decide on the next project.
-  self:ScanArchProjects(event)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 1") end, 2)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 2") end, 5)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 3") end, 10)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 4") end, 20)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 5") end, 30)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 6") end, 60)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 7") end, 120)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 8") end, 180)
-  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 9") end, 300)
- end
-end
+-- -- We solved an artifact; scan projects
+-- if scan then
+--  -- Scan now, and later. The server takes a second to decide on the next project.
+--  self:ScanArchProjects(event)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 1") end, 2)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 2") end, 5)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 3") end, 10)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 4") end, 20)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 5") end, 30)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 6") end, 60)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 7") end, 120)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 8") end, 180)
+--  self:ScheduleTimer(function() R:ScanArchProjects("SOLVED AN ARTIFACT - DELAYED 9") end, 300)
+-- end
+--end
 
-function R:ScanArchProjects(reason)
- self:Debug("Scanning archaeology projects (%s)", reason)
- if GetNumArchaeologyRaces() == 0 then return end
-	for race_id = 1, GetNumArchaeologyRaces() do
-	 SetSelectedArtifact(race_id)
-	 local name, _, rarity, icon, spellDescription, numSockets = GetSelectedArtifactInfo()
-  if architems[name] then
-   -- We started a project we were looking for!
-   local id = architems[name].itemId
-   if id then self:FoundItem(id, items[id]) end
-  end
- end
-end
+--function R:ScanArchProjects(reason)
+-- self:Debug("Scanning archaeology projects (%s)", reason)
+-- if GetNumArchaeologyRaces() == 0 then return end
+--	for race_id = 1, GetNumArchaeologyRaces() do
+--	 SetSelectedArtifact(race_id)
+--	 local name, _, rarity, icon, spellDescription, numSockets = GetSelectedArtifactInfo()
+--  if architems[name] then
+--   -- We started a project we were looking for!
+--   local id = architems[name].itemId
+--   if id then self:FoundItem(id, items[id]) end
+--  end
+-- end
+--end
 
 
 -------------------------------------------------------------------------------------
@@ -1432,10 +1432,10 @@ do
      tooltip2:AddLine(colorize("    "..v, gray))
     end
    end
-  elseif item.method == ARCH then
-   if item.raceId then
-    tooltip2:AddLine(colorize("    "..R.string_archraces[item.raceId], gray))
-   end
+  --elseif item.method == ARCH then
+  -- if item.raceId then
+  --  tooltip2:AddLine(colorize("    "..R.string_archraces[item.raceId], gray))
+  -- end
   elseif item.method == USE then
    if item.items and type(item.items) == "table" then
     for k, v in pairs(item.items) do
@@ -1898,30 +1898,30 @@ function R:ScanExistingItems(reason)
  end
 
  -- Scan all archaeology races and set any item attempts to the number of solves for that race
- local s = 0
- for x = 1, GetNumArchaeologyRaces() do
-  local c = GetNumArtifactsByRace(x)
-  local a = 0
-  for y = 1, c do
-   local t = select(9, GetArtifactInfoByRace(x, y))
-   a = a + t
-   s = s + t
-  end
+-- local s = 0
+-- for x = 1, GetNumArchaeologyRaces() do
+--  local c = GetNumArtifactsByRace(x)
+--  local a = 0
+--  for y = 1, c do
+--   local t = select(9, GetArtifactInfoByRace(x, y))
+--   a = a + t
+--   s = s + t
+--  end
 
-  for k, v in pairs(self.db.profile.groups) do
-   if type(v) == "table" then
-    for kk, vv in pairs(v) do
-     if type(vv) == "table" then
-      if vv.enabled ~= false then
-       if vv.method == ARCH and vv.raceId ~= nil then
-        if vv.raceId == x then vv.attempts = a end
-       end
-      end
-     end
-    end
-   end
-  end
- end
+--  for k, v in pairs(self.db.profile.groups) do
+--   if type(v) == "table" then
+--    for kk, vv in pairs(v) do
+--     if type(vv) == "table" then
+--      if vv.enabled ~= false then
+--       if vv.method == ARCH and vv.raceId ~= nil then
+--        if vv.raceId == x then vv.attempts = a end
+--       end
+--      end
+--     end
+--    end
+--   end
+--  end
+-- end
 
  -- Scan for kill statistics
  self:ScanStatistics(reason)

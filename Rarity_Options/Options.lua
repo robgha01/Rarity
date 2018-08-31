@@ -17,7 +17,7 @@ local BOSS = "BOSS"
 local ZONE = "ZONE"
 local USE = "USE"
 local FISHING = "FISHING"
-local ARCH = "ARCH"
+--local ARCH = "ARCH"
 local SPECIAL = "SPECIAL"
 local MINING = "MINING"
 
@@ -486,7 +486,7 @@ function R:CreateGroup(options, group, isUser)
       [ZONE] = L["Drops from any mob in a zone"],
       [USE] = L["Obtained by using an item or opening a container"],
       [FISHING] = L["Obtained by fishing"],
-      [ARCH] = L["Obtained as an archaeology project"],
+      --[ARCH] = L["Obtained as an archaeology project"],
 					},
 					get = function() return item.method end,
 					set = function(info, val)
@@ -569,32 +569,32 @@ function R:CreateGroup(options, group, isUser)
 			  disabled = not isUser,
 		  },
 							
-				raceId = {
-					type = "select",
-					name = L["Archaeology race"],
-					desc = L["Determines which race includes this archaeology project."],
-     width = "half",
-					values = {
-      [1] = L["Dwarf"],
-      [2] = L["Draenei"],
-      [3] = L["Fossil"],
-      [4] = L["Night Elf"],
-      [5] = L["Nerubian"],
-      [6] = L["Orc"],
-      [7] = L["Tol'vir"],
-      [8] = L["Troll"],
-      [9] = L["Vrykul"],
-      --[10] = L["Other"],
-					},
-					get = function() return item.raceId end,
-					set = function(info, val)
-						item.raceId = val
-						self:Update("OPTIONS")
-					end,
-					order = newOrder(),
-     disabled = not isUser,
-     hidden = function() return item.method ~= ARCH end,
-				},
+				--raceId = {
+				--	type = "select",
+				--	name = L["Archaeology race"],
+				--	desc = L["Determines which race includes this archaeology project."],
+    -- width = "half",
+				--	values = {
+    --  [1] = L["Dwarf"],
+    --  [2] = L["Draenei"],
+    --  [3] = L["Fossil"],
+    --  [4] = L["Night Elf"],
+    --  [5] = L["Nerubian"],
+    --  [6] = L["Orc"],
+    --  [7] = L["Tol'vir"],
+    --  [8] = L["Troll"],
+    --  [9] = L["Vrykul"],
+    --  --[10] = L["Other"],
+				--	},
+				--	get = function() return item.raceId end,
+				--	set = function(info, val)
+				--		item.raceId = val
+				--		self:Update("OPTIONS")
+				--	end,
+				--	order = newOrder(),
+    -- disabled = not isUser,
+    -- hidden = function() return item.method ~= ARCH end,
+				--},
 
 		  zones = {
 			  type = "input",
@@ -835,7 +835,7 @@ function R:CreateGroup(options, group, isUser)
      hidden = function()
       if R.db.profile.debugMode then return false end
       --if item.method == USE then return true end
-      if item.type == MOUNT or item.type == ARCH then return true else return false end
+      if item.type == MOUNT then return true else return false end
      end,
 				},
 
