@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # WowAddOnStudio Solution File, Format Version 11.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E6E1D386-69D8-4755-9E61-0950293915FC}") = "Rarity", "Rarity\Rarity.wowproj", "{63F59FCC-A5F2-4463-83E2-5DD4E02A9876}"
+Project("{E6E1D386-69D8-4755-9E61-0950293915FC}") = "Rarity", "Rarity\Rarity.wowproj", "{0F29C745-B930-4055-A06D-5CFA3DAD8167}"
+EndProject
+Project("{E6E1D386-69D8-4755-9E61-0950293915FC}") = "Rarity_Options", "Rarity_Options\Rarity_Options.wowproj", "{E7D46022-5D42-461B-A647-349F621303CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Any CPU = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{63F59FCC-A5F2-4463-83E2-5DD4E02A9876}.Default|Any CPU.ActiveCfg = Default|Any CPU
-		{63F59FCC-A5F2-4463-83E2-5DD4E02A9876}.Default|Any CPU.Build.0 = Default|Any CPU
+		{0F29C745-B930-4055-A06D-5CFA3DAD8167}.Default|Any CPU.ActiveCfg = Default|Any CPU
+		{0F29C745-B930-4055-A06D-5CFA3DAD8167}.Default|Any CPU.Build.0 = Default|Any CPU
+		{E7D46022-5D42-461B-A647-349F621303CF}.Default|Any CPU.ActiveCfg = Default|Any CPU
+		{E7D46022-5D42-461B-A647-349F621303CF}.Default|Any CPU.Build.0 = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
